@@ -18,7 +18,7 @@ name = case RUBY_PLATFORM
 
          'win32'
        when /darwin/ then
-         $LDFLAGS << '-framework IOBluetooth'
+         $LDFLAGS << ' -framework IOBluetooth'
          'macosx'
        else
          abort "unknown platform #{RUBY_PLATFORM}"
