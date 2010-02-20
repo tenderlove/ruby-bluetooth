@@ -30,8 +30,17 @@ static VALUE bt_scan(VALUE self) {
 
 - (void) deviceInquiryDeviceFound:(IOBluetoothDeviceInquiry*)sender
                           device:(IOBluetoothDevice*)device {
+    VALUE name;
+    const char * device_name = [[device name] UTF8String];
+
+    if (device_name) {
+        name = rb_str_new2(device_name);
+    } else {
+        name = rb_str_new2("unknown");
+    }
+
     VALUE dev = rb_funcall(bt_cBluetoothDevice, rb_intern("new"), 2,
-            rb_str_new2([[device name] UTF8String]),
+            name,
             rb_str_new2([[device getAddressString] UTF8String]));
 
     rb_ary_push(_devices, dev);
