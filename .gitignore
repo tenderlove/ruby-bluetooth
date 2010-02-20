@@ -1,0 +1,6 @@
+/src/Makefile
+*.swp
+*.bundle
+*.dll
+*.so
+*.o
