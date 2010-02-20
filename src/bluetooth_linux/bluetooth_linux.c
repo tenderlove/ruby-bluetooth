@@ -7,25 +7,19 @@
 #include <arpa/inet.h>
 
 VALUE bt_module;
-VALUE bt_device_class;
 VALUE bt_devices_class;
 VALUE bt_socket_class;
 VALUE bt_rfcomm_socket_class;
 VALUE bt_l2cap_socket_class;
 VALUE bt_service_class;
 VALUE bt_services_class;
+VALUE bt_cBluetoothDevice;
 
 // The initialization method for this module
 void Init_ruby_bluetooth()
 {
     bt_module = rb_define_module("Bluetooth");
 
-    bt_device_class = rb_define_class_under(bt_module, "Device", rb_cObject);
-    rb_define_singleton_method(bt_device_class, "new", bt_device_new, 2);
-    rb_define_attr(bt_device_class, "addr", Qtrue, Qfalse);
-    rb_define_attr(bt_device_class, "name", Qtrue, Qfalse);
-
-    bt_devices_class = rb_define_class_under(bt_module, "Devices", rb_cObject);
     rb_define_singleton_method(bt_devices_class, "scan", bt_devices_scan, 0);
     rb_undef_method(bt_devices_class, "initialize");
 
@@ -61,6 +55,9 @@ void Init_ruby_bluetooth()
 
     rb_define_method(bt_service_class, "registered?", bt_service_registered, 0);
 
+    rb_require("bluetooth/device");
+
+    bt_cBluetoothDevice = rb_const_get(mBluetooth, rb_intern("Device"));
 }
 
 static VALUE bt_socket_accept(VALUE self) {
@@ -377,21 +374,6 @@ static VALUE bt_l2cap_socket_init(int argc, VALUE *argv, VALUE sock)
     return ret;
 }
 
-// Create a Device, right now it only holds name and addr
-static VALUE bt_device_new(VALUE self, VALUE name, VALUE addr)
-{
-    struct bluetooth_device_struct *bds;
-
-    VALUE obj = Data_Make_Struct(self,
-                                 struct bluetooth_device_struct, NULL,
-                                 free, bds);
-
-    rb_iv_set(obj, "@name", name);
-    rb_iv_set(obj, "@addr", addr);
-
-    return obj;
-}
-
 // Scan local network for visible remote devices
 static VALUE bt_devices_scan(VALUE self)
 {
@@ -428,10 +410,10 @@ static VALUE bt_devices_scan(VALUE self)
         memset(name, 0, sizeof(name));
         if (hci_read_remote_name(sock, &(ii+i)->bdaddr, sizeof(name),
                                  name, 0) < 0)
-            strcpy(name, "[unknown]");
+            strcpy(name, "(unknown)");
 
-        VALUE bt_dev = bt_device_new(bt_device_class,
-                                     rb_str_new2(name), rb_str_new2(addr));
+        VALUE bt_dev = rb_funcall(bt_cBluetoothDevice, rb_intern("new"), 2,
+                rb_str_new(name), rb_str_new2(addr));
 
         rb_ary_push(devices_array, bt_dev);
     }

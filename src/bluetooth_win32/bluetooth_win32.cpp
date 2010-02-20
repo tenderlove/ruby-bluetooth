@@ -18,35 +18,20 @@
 
 
 VALUE bt_module;
-VALUE bt_device_class;
 VALUE bt_devices_class;
+VALUE bt_cBluetoothDevice;
 
 // The initialization method for this module
 void Init_ruby_bluetooth()
 {
     bt_module = rb_define_module("Bluetooth");
-    bt_device_class = rb_define_class_under(bt_module, "Device", rb_cObject);
     bt_devices_class = rb_define_class_under(bt_module, "Devices", rb_cObject);
     rb_define_singleton_method(bt_devices_class, "scan", RUBY_METHOD_FUNC(bt_devices_scan), 0);
-    rb_define_method(bt_device_class, "initialize", RUBY_METHOD_FUNC(bt_device_new), 2);
-    rb_define_attr(bt_device_class, "addr", Qtrue, Qfalse);
-    rb_define_attr(bt_device_class, "name", Qtrue, Qfalse);
     rb_undef_method(bt_devices_class, "initialize");
-}
 
-// Create a Device, right now it only holds name and addr
-static VALUE bt_device_new(VALUE self, VALUE name, VALUE addr)
-{
-    struct bluetooth_device_struct *bds;
+    rb_require("bluetooth/device");
 
-    VALUE obj = Data_Make_Struct(self,
-                                 struct bluetooth_device_struct, NULL,
-                                 free, bds);
-
-    rb_iv_set(obj, "@name", name);
-    rb_iv_set(obj, "@addr", addr);
-
-    return obj;
+    bt_cBluetoothDevice = rb_const_get(mBluetooth, rb_intern("Device"));
 }
 
 // Scan local network for visible remote devices
@@ -102,9 +87,9 @@ static VALUE bt_devices_scan(VALUE self)
                              rgBytes[1],
                              rgBytes[0]);
 
-                    VALUE bt_dev = bt_device_new(bt_device_class,
-                                                 rb_str_new2(name),
-                                                 rb_str_new2(addr));
+                    VALUE bt_dev = rb_funcall(bt_cBluetoothDevice,
+                        rb_intern("new"), 2, 
+                        rb_str_new2(name), rb_str_new2(addr));
                     rb_ary_push(devices_array, bt_dev);
                 }
                 while(BluetoothFindNextDevice(hDeviceFind, &deviceInfo));
