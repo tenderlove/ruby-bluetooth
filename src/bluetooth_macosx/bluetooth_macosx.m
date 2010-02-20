@@ -36,7 +36,7 @@ static VALUE bt_scan(VALUE self) {
     if (device_name) {
         name = rb_str_new2(device_name);
     } else {
-        name = rb_str_new2("unknown");
+        name = rb_str_new2("(unknown)");
     }
 
     VALUE dev = rb_funcall(bt_cBluetoothDevice, rb_intern("new"), 2,
