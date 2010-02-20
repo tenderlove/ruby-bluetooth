@@ -3,17 +3,15 @@
 #import <IOBluetooth/IOBluetoothUserLib.h>
 #import <IOBluetooth/objc/IOBluetoothDevice.h>
 
-// Forwards
 @class IOBluetoothDeviceInquiry;
 
 @interface BluetoothDeviceScanner : NSObject {
 	IOBluetoothDeviceInquiry *      _inquiry;
 	BOOL                            _busy;
-	VALUE                           _foundDevices;
+	VALUE                           _devices;
 }
 
 - (void) stopSearch;
 - (IOReturn) startSearch;
-- (BOOL) isBusy;
-- (VALUE) foundDevices;
+- (VALUE) devices;
 @end

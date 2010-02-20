@@ -6,31 +6,9 @@
 
 #import "bluetooth_macosx.h"
 
-struct bluetooth_device_struct {
-	VALUE addr;
-	VALUE name;
-};
+VALUE bt_cBluetoothDevice = Qnil;
 
-VALUE bt_module;
-VALUE bt_device_class;
-VALUE bt_devices_class;
-BOOL BUSY = false;
-
-static VALUE bt_device_new(VALUE self, VALUE name, VALUE addr) {
-    struct bluetooth_device_struct *bds;
-
-    VALUE obj = Data_Make_Struct(self,
-            struct bluetooth_device_struct, NULL,
-            free, bds);
-
-    rb_iv_set(obj, "@name", name);
-    rb_iv_set(obj, "@addr", addr);
-
-    return obj;
-}
-
-// Scan local network for visible remote devices
-static VALUE bt_devices_scan(VALUE self) {
+static VALUE bt_scan(VALUE self) {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     BluetoothDeviceScanner *bds = [BluetoothDeviceScanner new];
 
@@ -40,71 +18,34 @@ static VALUE bt_devices_scan(VALUE self) {
 
     [pool release];
 
-    return [bds foundDevices];
+    return [bds devices];
 }
 
 @implementation BluetoothDeviceScanner
 
-- (void) deviceInquiryComplete:(IOBluetoothDeviceInquiry*)sender {
-    rb_p(rb_str_new2("complete"));
-
-    CFRunLoopStop(CFRunLoopGetCurrent());
-}
-
 - (void) deviceInquiryComplete:(IOBluetoothDeviceInquiry*)sender
                         error:(IOReturn)error aborted:(BOOL)aborted {
-    rb_p(rb_str_new2("complete"));
-
     CFRunLoopStop(CFRunLoopGetCurrent());
-}
-
-- (void) deviceInquiryDeviceFound:(IOBluetoothDeviceInquiry*)sender {
-    rb_p(rb_str_new2("device found"));
 }
 
 - (void) deviceInquiryDeviceFound:(IOBluetoothDeviceInquiry*)sender
                           device:(IOBluetoothDevice*)device {
-    rb_p(rb_str_new2("device found"));
-//    const BluetoothDeviceAddress* addressPtr = [device getAddress];
-//
-//    NSString* deviceAddressString = [NSString stringWithFormat:@"[%02x:%02x:%02x:%02x:%02x:%02x]",
-//             addressPtr->data[0],
-//             addressPtr->data[1],
-//             addressPtr->data[2],
-//             addressPtr->data[3],
-//             addressPtr->data[4],
-//             addressPtr->data[5]];
-//
-//    VALUE bt_dev = bt_device_new(bt_device_class,
-//            rb_str_new2("unknown"),
-//            rb_str_new2([deviceAddressString UTF8String]));
-//
-//    rb_p(rb_str_new2([deviceAddressString UTF8String]));
-//
-//    rb_ary_push(_foundDevices, bt_dev);
-}
+    VALUE dev = rb_funcall(bt_cBluetoothDevice, rb_intern("new"), 2,
+            rb_str_new2([[device name] UTF8String]),
+            rb_str_new2([[device getAddressString] UTF8String]));
 
-- (void) deviceInquiryDeviceNameUpdated:(IOBluetoothDeviceInquiry*)sender {
-    rb_p(rb_str_new2("name updated"));
+    rb_ary_push(_devices, dev);
 }
 
 - (void) deviceInquiryDeviceNameUpdated:(IOBluetoothDeviceInquiry*)sender
                                  device:(IOBluetoothDevice*)device
                        devicesRemaining:(uint32_t)devicesRemaining {
-    rb_p(rb_str_new2("name updated"));
-}
-
-- (void) deviceInquiryStarted:(IOBluetoothDeviceInquiry*)sender {
-    rb_p(rb_str_new2("started"));
-}
-
-- (void) deviceInquiryUpdatingDeviceNamesStarted:(IOBluetoothDeviceInquiry*)sender {
-    rb_p(rb_str_new2("updating names started"));
+    // do something
 }
 
 - (void) deviceInquiryUpdatingDeviceNamesStarted:(IOBluetoothDeviceInquiry*)sender
                                 devicesRemaining:(uint32_t)devicesRemaining {
-    rb_p(rb_str_new2("updating names started"));
+    // do something
 }
 
 - (IOReturn) startSearch {
@@ -112,12 +53,10 @@ static VALUE bt_devices_scan(VALUE self) {
 
     [self stopSearch];
 
-    _foundDevices = rb_ary_new();
-
     _inquiry = [IOBluetoothDeviceInquiry inquiryWithDelegate:self];
+    _devices = rb_ary_new();
 
-    [_inquiry setInquiryLength: 5];
-    [_inquiry setUpdateNewDeviceNames: FALSE];
+    [_inquiry setUpdateNewDeviceNames: TRUE];
 
     status = [_inquiry start];
 
@@ -127,45 +66,33 @@ static VALUE bt_devices_scan(VALUE self) {
         _busy = TRUE;
     }
 
-    rb_p(rb_str_new2("starting"));
-
     return status;
 }
 
 - (void) stopSearch {
     if (_inquiry) {
         [_inquiry stop];
+
         [_inquiry release];
         _inquiry = nil;
-
-        rb_p(rb_str_new2("stopped"));
     }
 }
 
-- (BOOL) isBusy {
-    return _busy;
-}
-
-- (VALUE) foundDevices {
-    return _foundDevices;
+- (VALUE) devices {
+    return _devices;
 }
 @end
 
 void Init_ruby_bluetooth() {
-    bt_module = rb_define_module("Bluetooth");
+    VALUE mBluetooth = rb_define_module("Bluetooth");
 
-    // Bluetooth::Devices
-    bt_devices_class = rb_define_class_under(bt_module, "Devices", rb_cObject);
+    VALUE cDevices = rb_define_class_under(mBluetooth, "Devices", rb_cObject);
 
-    rb_undef_method(bt_devices_class, "initialize");
-    rb_define_singleton_method(bt_devices_class, "scan", bt_devices_scan, 0);
+    rb_undef_alloc_func(cDevices);
+    rb_define_singleton_method(cDevices, "scan", bt_scan, 0);
 
-    // Bluetooth::Device
-    bt_device_class = rb_define_class_under(bt_module, "Device", rb_cObject);
+    rb_require("bluetooth/device");
 
-    rb_define_singleton_method(bt_device_class, "new", bt_device_new, 2);
-
-    rb_define_attr(bt_device_class, "addr", Qtrue, Qfalse);
-    rb_define_attr(bt_device_class, "name", Qtrue, Qfalse);
+    bt_cBluetoothDevice = rb_const_get(mBluetooth, rb_intern("Device"));
 }
 
