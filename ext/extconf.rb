@@ -1,10 +1,6 @@
-# Loads mkmf which is used to make makefiles for Ruby extensions
 require 'mkmf'
 
-# Give it a name
-extension_name = 'ruby_bluetooth'
-
-dir_config(extension_name)
+dir_config 'ruby_bluetooth'
 
 name = case RUBY_PLATFORM
        when /linux/ then
@@ -24,7 +20,7 @@ name = case RUBY_PLATFORM
          abort "unknown platform #{RUBY_PLATFORM}"
        end
 
-create_makefile 'ruby_bluetooth', "bluetooth_#{name}"
+create_makefile 'ruby_bluetooth', name
 
 if RUBY_PLATFORM =~ /darwin/ then
   open 'Makefile', 'a' do |io|
