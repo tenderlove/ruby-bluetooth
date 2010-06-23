@@ -4,7 +4,7 @@
 #import <IOBluetooth/objc/IOBluetoothDeviceInquiry.h>
 #import <IOBluetooth/IOBluetoothUserLib.h>
 
-#import "bluetooth_macosx.h"
+#import "ruby_bluetooth.h"
 
 VALUE bt_cBluetoothDevice = Qnil;
 

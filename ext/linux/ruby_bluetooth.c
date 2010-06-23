@@ -3,7 +3,7 @@
 #include <rubyio.h>
 #include <rubysig.h>
 #include <util.h>
-#include "bluetooth_linux.h"
+#include "ruby_bluetooth.h"
 #include <arpa/inet.h>
 
 VALUE bt_module;

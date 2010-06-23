@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 
-#include "bluetooth_win32.h"
+#include "ruby_bluetooth.h"
 
 #pragma comment(lib, "irprops.lib")
 
