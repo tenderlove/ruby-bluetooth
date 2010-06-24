@@ -92,7 +92,7 @@ static VALUE rbt_scan(VALUE self) {
 }
 @end
 
-void Init_ruby_bluetooth() {
+void Init_bluetooth() {
     VALUE mBluetooth = rb_define_module("Bluetooth");
 
     VALUE cDevices = rb_define_class_under(mBluetooth, "Devices", rb_cObject);

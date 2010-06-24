@@ -1,6 +1,6 @@
 require 'mkmf'
 
-dir_config 'ruby_bluetooth'
+dir_config 'bluetooth'
 
 name = case RUBY_PLATFORM
        when /linux/ then
@@ -20,7 +20,7 @@ name = case RUBY_PLATFORM
          abort "unknown platform #{RUBY_PLATFORM}"
        end
 
-create_makefile 'ruby_bluetooth', name
+create_makefile 'bluetooth', name
 
 if RUBY_PLATFORM =~ /darwin/ then
   open 'Makefile', 'a' do |io|

@@ -16,7 +16,7 @@ VALUE bt_services_class;
 VALUE bt_cBluetoothDevice;
 
 // The initialization method for this module
-void Init_ruby_bluetooth()
+void Init_bluetooth()
 {
     bt_module = rb_define_module("Bluetooth");
 
@@ -54,8 +54,6 @@ void Init_ruby_bluetooth()
     rb_define_attr(bt_service_class, "provider", Qtrue, Qfalse);
 
     rb_define_method(bt_service_class, "registered?", bt_service_registered, 0);
-
-    rb_require("bluetooth/device");
 
     bt_cBluetoothDevice = rb_const_get(mBluetooth, rb_intern("Device"));
 }

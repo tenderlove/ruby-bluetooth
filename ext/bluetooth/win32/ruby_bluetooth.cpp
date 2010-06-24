@@ -22,14 +22,12 @@ VALUE bt_devices_class;
 VALUE bt_cBluetoothDevice;
 
 // The initialization method for this module
-void Init_ruby_bluetooth()
+void Init_bluetooth()
 {
     bt_module = rb_define_module("Bluetooth");
     bt_devices_class = rb_define_class_under(bt_module, "Devices", rb_cObject);
     rb_define_singleton_method(bt_devices_class, "scan", RUBY_METHOD_FUNC(bt_devices_scan), 0);
     rb_undef_method(bt_devices_class, "initialize");
-
-    rb_require("bluetooth/device");
 
     bt_cBluetoothDevice = rb_const_get(mBluetooth, rb_intern("Device"));
 }

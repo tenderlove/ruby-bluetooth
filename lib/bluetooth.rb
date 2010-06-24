@@ -6,5 +6,5 @@ module Bluetooth
 
 end
 
-require 'ruby_bluetooth/ruby_bluetooth'
+require 'bluetooth/bluetooth'
 

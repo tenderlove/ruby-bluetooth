@@ -12,14 +12,14 @@ hoe = Hoe.spec 'ruby-bluetooth' do
   self.clean_globs = %w[
     ext/Makefile
     ext/mkmf.log
-    ext/ruby_bluetooth.bundle
-    ext/ruby_bluetooth.o
+    ext/bluetooth.bundle
+    ext/bluetooth.o
   ]
 
-  self.spec_extras[:extensions] = 'ext/extconf.rb'
+  self.spec_extras[:extensions] = 'ext/bluetooth/extconf.rb'
 end
 
-#Rake::ExtensionTask.new 'ruby_bluetooth' do |ext|
+#Rake::ExtensionTask.new 'bluetooth' do |ext|
 #  ext.source_pattern = '*/*.{c,cpp,h,m}'
 #  ext.gem_spec = hoe.spec
 #end
