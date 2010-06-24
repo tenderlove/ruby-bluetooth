@@ -1,4 +1,4 @@
-require "ruby_bluetooth"
+require 'bluetooth'
 
 a = Bluetooth::Devices.scan
 a.each { |device|
