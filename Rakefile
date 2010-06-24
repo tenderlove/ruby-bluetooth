@@ -10,10 +10,10 @@ hoe = Hoe.spec 'ruby-bluetooth' do
   extra_dev_deps << ['rake-compiler', '>= 0.4.1']
 
   self.clean_globs = %w[
-    ext/Makefile
-    ext/mkmf.log
-    ext/bluetooth.bundle
-    ext/bluetooth.o
+    ext/bluetooth/Makefile
+    ext/bluetooth/mkmf.log
+    ext/bluetooth/bluetooth.bundle
+    ext/bluetooth/*.o
   ]
 
   self.spec_extras[:extensions] = 'ext/bluetooth/extconf.rb'
