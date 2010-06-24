@@ -7,7 +7,7 @@ hoe = Hoe.spec 'ruby-bluetooth' do
   developer 'Jeremie Castagna', ''
   developer 'Esteve Fernandez', ''
 
-  extra_dev_deps << ['rake-compiler', '>= 0.4.1']
+  extra_dev_deps << ['rake-compiler', '~> 0.6']
 
   self.clean_globs = %w[
     ext/bluetooth/Makefile

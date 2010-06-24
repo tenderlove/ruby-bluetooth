@@ -1,30 +1,37 @@
 #import "ruby_bluetooth.h"
 
-//extern VALUE rbt_cBluetoothDevice;
-
-VALUE rbt_request_name(VALUE self) {
-    BluetoothDeviceAddress b_address;
+static IOBluetoothDevice *rbt_get_device(VALUE self) {
+    BluetoothDeviceAddress address;
     IOBluetoothDevice *device;
-    IOReturn status;
+    VALUE address_bytes;
     char * tmp = NULL;
-    VALUE name, v_address;
-    NSAutoreleasePool *pool;
 
-    v_address = rb_funcall(self, rb_intern("address_bytes"), 0);
+    address_bytes = rb_funcall(self, rb_intern("address_bytes"), 0);
 
-    if (RSTRING_LEN(v_address) != 6) {
-        VALUE inspect = rb_inspect(v_address);
+    if (RSTRING_LEN(address_bytes) != 6) {
+        VALUE inspect = rb_inspect(address_bytes);
         rb_raise(rb_eArgError, "%s doesn't look like a bluetooth address",
                  StringValueCStr(inspect));
     }
 
-    tmp = StringValuePtr(v_address);
+    tmp = StringValuePtr(address_bytes);
 
-    memcpy(b_address.data, tmp, 6);
+    memcpy(address.data, tmp, 6);
+
+    device = [IOBluetoothDevice withAddress: &address];
+
+    return device;
+}
+
+VALUE rbt_request_name(VALUE self) {
+    IOBluetoothDevice *device;
+    IOReturn status;
+    VALUE name;
+    NSAutoreleasePool *pool;
 
     pool = [[NSAutoreleasePool alloc] init];
 
-    device = [IOBluetoothDevice withAddress: &b_address];
+    device = rbt_get_device(self);
 
     status = [device remoteNameRequest: nil];
 
