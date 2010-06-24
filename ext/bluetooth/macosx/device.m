@@ -1,5 +1,7 @@
 #import "ruby_bluetooth.h"
 
+#import <IOBluetooth/objc/IOBluetoothDevicePair.h>
+
 static IOBluetoothDevice *rbt_device_get(VALUE self) {
     BluetoothDeviceAddress address;
     IOBluetoothDevice *device;
@@ -23,6 +25,43 @@ static IOBluetoothDevice *rbt_device_get(VALUE self) {
     return device;
 }
 
+VALUE rbt_device_pair(VALUE self) {
+    PairingDelegate *delegate;
+    IOBluetoothDevice *device;
+    IOBluetoothDevicePair *device_pair;
+    IOReturn status;
+    NSAutoreleasePool *pool;
+    char * tmp = NULL;
+
+    pool = [[NSAutoreleasePool alloc] init];
+
+    device = rbt_device_get(self);
+
+    delegate = [[PairingDelegate alloc] init];
+    delegate.device = self;
+
+    device_pair = [IOBluetoothDevicePair pairWithDevice: device];
+    [device_pair setDelegate: delegate];
+
+    status = [device_pair start];
+
+    if (status != kIOReturnSuccess) {
+        [pool release];
+        return Qfalse;
+    }
+
+    CFRunLoopRun();
+
+    [pool release];
+
+    status = (IOReturn)NUM2INT(rb_iv_get(self, "@pair_error"));
+
+    if (status != kIOReturnSuccess)
+        return Qfalse;
+
+    return Qtrue;
+}
+
 VALUE rbt_device_request_name(VALUE self) {
     IOBluetoothDevice *device;
     IOReturn status;
@@ -44,4 +83,57 @@ VALUE rbt_device_request_name(VALUE self) {
 
     return name;
 }
+
+@implementation PairingDelegate
+
+- (VALUE) device {
+    return device;
+}
+
+- (void) setDevice: (VALUE)input {
+    device = input;
+}
+
+- (void) devicePairingConnecting: (id)sender {
+}
+
+- (void) devicePairingStarted: (id)sender {
+}
+
+- (void) devicePairingFinished: (id)sender
+                         error: (IOReturn)error {
+    CFRunLoopStop(CFRunLoopGetCurrent());
+
+    rb_iv_set(device, "@pair_error", INT2NUM(error));
+}
+
+- (void) devicePairingPasskeyNotification: (id)sender
+				  passkey: (BluetoothPasskey)passkey {
+    printf("passkey %ld!  I don't know what to do!", (unsigned long)passkey);
+}
+
+- (void) devicePairingPINCodeRequest: (id)sender {
+    puts("PIN code! I don't know what to do!");
+}
+
+- (void) devicePairingUserConfirmationRequest: (id)sender
+				 numericValue: (BluetoothNumericValue)numericValue {
+    BOOL confirm;
+    VALUE result = Qtrue;
+    VALUE numeric_value = ULONG2NUM((unsigned long)numericValue);
+    VALUE callback = rb_iv_get(device, "@pair_confirmation_callback");
+
+    if (RTEST(callback))
+        result = rb_funcall(callback, rb_intern("call"), 1, numeric_value);
+
+    if (RTEST(result)) {
+        confirm = YES;
+    } else {
+        confirm = NO;
+    }
+
+    [sender replyUserConfirmation: confirm];
+}
+
+@end
 

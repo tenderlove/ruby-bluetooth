@@ -2,14 +2,14 @@
 
 #import <IOBluetooth/IOBluetoothUserLib.h>
 #import <IOBluetooth/objc/IOBluetoothDevice.h>
+#import <IOBluetooth/objc/IOBluetoothDeviceInquiry.h>
 
 #import <ruby.h>
 
 VALUE rbt_scan(VALUE);
 
 VALUE rbt_device_request_name(VALUE);
-
-@class IOBluetoothDeviceInquiry;
+VALUE rbt_device_pair(VALUE);
 
 @interface BluetoothDeviceScanner : NSObject {
 	IOBluetoothDeviceInquiry *      _inquiry;
@@ -22,3 +22,21 @@ VALUE rbt_device_request_name(VALUE);
 - (VALUE) devices;
 @end
 
+@interface PairingDelegate : NSObject {
+	VALUE device;
+}
+
+- (VALUE) device;
+- (void) setDevice: (VALUE)device;
+
+- (void) devicePairingConnecting: (id)sender;
+- (void) devicePairingStarted: (id)sender;
+- (void) devicePairingFinished: (id)sender
+			 error: (IOReturn)error;
+
+- (void) devicePairingPasskeyNotification: (id)sender
+				  passkey: (BluetoothPasskey)passkey;
+- (void) devicePairingPINCodeRequest: (id)sender;
+- (void) devicePairingUserConfirmationRequest: (id)sender
+				 numericValue: (BluetoothNumericValue)numericValue;
+@end

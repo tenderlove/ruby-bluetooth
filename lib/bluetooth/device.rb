@@ -19,6 +19,9 @@ class Bluetooth::Device
   def initialize address, name = nil
     @address = address
     @name = name
+
+    @pair_error = nil
+    @pair_confirmation_callback = nil
   end
 
   ##
@@ -40,6 +43,14 @@ class Bluetooth::Device
     return '(unknown)' unless @name
 
     @name
+  end
+
+  ##
+  # Called during pairing if user confirmation is required with a number
+  # to match with the device.  Return true if the number matches.
+
+  def pair_confirmation &block
+    @pair_confirmation_callback = block
   end
 
   def to_s # :nodoc:

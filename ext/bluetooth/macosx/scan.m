@@ -1,5 +1,3 @@
-#import <IOBluetooth/objc/IOBluetoothDeviceInquiry.h>
-
 #import "ruby_bluetooth.h"
 
 extern VALUE rbt_cBluetoothDevice;
