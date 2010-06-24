@@ -1,6 +1,6 @@
 #import "ruby_bluetooth.h"
 
-static IOBluetoothDevice *rbt_get_device(VALUE self) {
+static IOBluetoothDevice *rbt_device_get(VALUE self) {
     BluetoothDeviceAddress address;
     IOBluetoothDevice *device;
     VALUE address_bytes;
@@ -23,7 +23,7 @@ static IOBluetoothDevice *rbt_get_device(VALUE self) {
     return device;
 }
 
-VALUE rbt_request_name(VALUE self) {
+VALUE rbt_device_request_name(VALUE self) {
     IOBluetoothDevice *device;
     IOReturn status;
     VALUE name;
@@ -31,7 +31,7 @@ VALUE rbt_request_name(VALUE self) {
 
     pool = [[NSAutoreleasePool alloc] init];
 
-    device = rbt_get_device(self);
+    device = rbt_device_get(self);
 
     status = [device remoteNameRequest: nil];
 

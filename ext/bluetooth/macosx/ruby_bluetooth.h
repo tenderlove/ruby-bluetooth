@@ -5,8 +5,9 @@
 
 #import <ruby.h>
 
-VALUE rbt_request_name(VALUE);
 VALUE rbt_scan(VALUE);
+
+VALUE rbt_device_request_name(VALUE);
 
 @class IOBluetoothDeviceInquiry;
 

@@ -9,6 +9,7 @@ void Init_bluetooth() {
 
     rbt_cBluetoothDevice = rb_const_get(mBluetooth, rb_intern("Device"));
 
-    rb_define_method(rbt_cBluetoothDevice, "request_name", rbt_request_name, 0);
+    rb_define_method(rbt_cBluetoothDevice, "request_name",
+		     rbt_device_request_name, 0);
 }
 
