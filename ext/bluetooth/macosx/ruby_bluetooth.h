@@ -3,6 +3,10 @@
 #import <IOBluetooth/IOBluetoothUserLib.h>
 #import <IOBluetooth/objc/IOBluetoothDevice.h>
 
+#import <ruby.h>
+
+VALUE rbt_scan(VALUE);
+
 @class IOBluetoothDeviceInquiry;
 
 @interface BluetoothDeviceScanner : NSObject {
@@ -15,3 +19,4 @@
 - (IOReturn) startSearch;
 - (VALUE) devices;
 @end
+
