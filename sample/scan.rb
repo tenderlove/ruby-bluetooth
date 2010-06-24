@@ -1,6 +1,8 @@
 require 'bluetooth'
 
-a = Bluetooth::Devices.scan
-a.each { |device|
+devices = Bluetooth.scan
+
+devices.each do |device|
   puts device
-}
+end
+
