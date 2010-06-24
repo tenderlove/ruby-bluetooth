@@ -1,5 +1,4 @@
 #import <IOBluetooth/objc/IOBluetoothDeviceInquiry.h>
-#import <IOBluetooth/IOBluetoothUserLib.h>
 
 #import "ruby_bluetooth.h"
 
@@ -21,24 +20,22 @@ VALUE rbt_scan(VALUE self) {
 @implementation BluetoothDeviceScanner
 
 - (void) deviceInquiryComplete:(IOBluetoothDeviceInquiry*)sender
-                        error:(IOReturn)error aborted:(BOOL)aborted {
+                         error:(IOReturn)error aborted:(BOOL)aborted {
     CFRunLoopStop(CFRunLoopGetCurrent());
 }
 
 - (void) deviceInquiryDeviceFound:(IOBluetoothDeviceInquiry*)sender
-                          device:(IOBluetoothDevice*)device {
-    VALUE name;
+                           device:(IOBluetoothDevice*)device {
+    VALUE address, name;
     const char * device_name = [[device name] UTF8String];
 
-    if (device_name) {
+    address = rb_str_new2([[device getAddressString] UTF8String]); 
+
+    if (device_name)
         name = rb_str_new2(device_name);
-    } else {
-        name = rb_str_new2("(unknown)");
-    }
 
     VALUE dev = rb_funcall(rbt_cBluetoothDevice, rb_intern("new"), 2,
-            name,
-            rb_str_new2([[device getAddressString] UTF8String]));
+                           address, name);
 
     rb_ary_push(_devices, dev);
 }
