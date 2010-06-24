@@ -6,9 +6,9 @@
 
 #import "ruby_bluetooth.h"
 
-VALUE bt_cBluetoothDevice = Qnil;
+VALUE rbt_cBluetoothDevice = Qnil;
 
-static VALUE bt_scan(VALUE self) {
+static VALUE rbt_scan(VALUE self) {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     BluetoothDeviceScanner *bds = [BluetoothDeviceScanner new];
 
@@ -39,7 +39,7 @@ static VALUE bt_scan(VALUE self) {
         name = rb_str_new2("(unknown)");
     }
 
-    VALUE dev = rb_funcall(bt_cBluetoothDevice, rb_intern("new"), 2,
+    VALUE dev = rb_funcall(rbt_cBluetoothDevice, rb_intern("new"), 2,
             name,
             rb_str_new2([[device getAddressString] UTF8String]));
 
@@ -98,10 +98,8 @@ void Init_ruby_bluetooth() {
     VALUE cDevices = rb_define_class_under(mBluetooth, "Devices", rb_cObject);
 
     rb_undef_alloc_func(cDevices);
-    rb_define_singleton_method(cDevices, "scan", bt_scan, 0);
+    rb_define_singleton_method(cDevices, "scan", rbt_scan, 0);
 
-    rb_require("bluetooth/device");
-
-    bt_cBluetoothDevice = rb_const_get(mBluetooth, rb_intern("Device"));
+    rbt_cBluetoothDevice = rb_const_get(mBluetooth, rb_intern("Device"));
 }
 
