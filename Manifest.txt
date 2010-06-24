@@ -1,0 +1,14 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+ext/extconf.rb
+ext/linux/ruby_bluetooth.c
+ext/linux/ruby_bluetooth.h
+ext/macosx/ruby_bluetooth.h
+ext/macosx/ruby_bluetooth.m
+ext/win32/ruby_bluetooth.cpp
+ext/win32/ruby_bluetooth.h
+lib/bluetooth.rb
+lib/bluetooth/device.rb
+sample/scan.rb
