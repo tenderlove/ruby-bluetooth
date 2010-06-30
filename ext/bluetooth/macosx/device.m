@@ -25,6 +25,69 @@ static IOBluetoothDevice *rbt_device_get(VALUE self) {
     return device;
 }
 
+VALUE rbt_device_link_quality(VALUE self) {
+    HCIDelegate *delegate;
+    IOBluetoothDevice *device;
+    IOBluetoothHostController *controller;
+    IOReturn status;
+    NSAutoreleasePool *pool;
+
+    pool = [[NSAutoreleasePool alloc] init];
+
+    device = rbt_device_get(self);
+
+    delegate = [[HCIDelegate alloc] init];
+    delegate.device = self;
+
+    controller = [IOBluetoothHostController defaultController];
+    [controller setDelegate: delegate];
+
+    status = [controller readLinkQualityForDevice: device];
+
+    if (status != noErr) {
+        [pool release];
+        return Qfalse;
+    }
+
+    CFRunLoopRun();
+
+    [pool release];
+
+    status = (IOReturn)NUM2INT(rb_iv_get(self, "@link_quality_error"));
+
+    if (status != kIOReturnSuccess)
+        return Qfalse;
+
+    return rb_iv_get(self, "@link_quality");
+}
+
+VALUE rbt_device_open_connection(VALUE self) {
+    IOBluetoothDevice *device;
+    IOReturn status;
+    NSAutoreleasePool *pool;
+    VALUE result;
+
+    pool = [[NSAutoreleasePool alloc] init];
+
+    device = rbt_device_get(self);
+
+    status = [device openConnection];
+
+    if (status != kIOReturnSuccess)
+        return Qnil;
+
+    result = rb_yield(Qundef);
+
+    status = [device closeConnection];
+
+    [pool release];
+
+    if (status != kIOReturnSuccess)
+        return Qnil;
+
+    return result;
+}
+
 VALUE rbt_device_pair(VALUE self) {
     PairingDelegate *delegate;
     IOBluetoothDevice *device;
@@ -82,6 +145,42 @@ VALUE rbt_device_request_name(VALUE self) {
     [pool release];
 
     return name;
+}
+
+VALUE rbt_device_rssi(VALUE self) {
+    HCIDelegate *delegate;
+    IOBluetoothDevice *device;
+    IOBluetoothHostController *controller;
+    IOReturn status;
+    NSAutoreleasePool *pool;
+
+    pool = [[NSAutoreleasePool alloc] init];
+
+    device = rbt_device_get(self);
+
+    delegate = [[HCIDelegate alloc] init];
+    delegate.device = self;
+
+    controller = [IOBluetoothHostController defaultController];
+    [controller setDelegate: delegate];
+
+    status = [controller readRSSIForDevice: device];
+
+    if (status != noErr) {
+        [pool release];
+        return Qfalse;
+    }
+
+    CFRunLoopRun();
+
+    [pool release];
+
+    status = (IOReturn)NUM2INT(rb_iv_get(self, "@rssi_error"));
+
+    if (status != kIOReturnSuccess)
+        return Qfalse;
+
+    return rb_iv_get(self, "@rssi");
 }
 
 @implementation PairingDelegate

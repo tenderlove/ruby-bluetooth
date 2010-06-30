@@ -32,6 +32,15 @@ class Bluetooth::Device
   end
 
   ##
+  # Returns the link quality for the device.
+
+  def link_quality
+    connect do
+      _link_quality
+    end
+  end
+
+  ##
   # The name of this Device.  It will be automatically looked up if not
   # already known.
 
@@ -51,6 +60,15 @@ class Bluetooth::Device
 
   def pair_confirmation &block
     @pair_confirmation_callback = block
+  end
+
+  ##
+  # Returns the RSSI for the device
+
+  def rssi
+    connect do
+      _rssi
+    end
   end
 
   def to_s # :nodoc:
