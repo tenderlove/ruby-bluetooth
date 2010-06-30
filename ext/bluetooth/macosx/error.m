@@ -32,27 +32,27 @@ void init_rbt_error() {
     rb_hash_aset(errors, INT2NUM(kIOReturnError), tmp);
 
     // IOKit
-    add_error(kIOReturnNoMemory,         "NoMemory",
+    add_error(kIOReturnNoMemory,         "NoMemoryError",
             "can't allocate memory");
-    add_error(kIOReturnNoResources,      "NoResources",
+    add_error(kIOReturnNoResources,      "NoResourcesError",
             "resource shortage");
     add_error(kIOReturnIPCError,         "IPCError",
             "error during IPC");
-    add_error(kIOReturnNoDevice,         "NoDevice",
+    add_error(kIOReturnNoDevice,         "NoDeviceError",
             "no such device");
-    add_error(kIOReturnNotPrivileged,    "NotPrivileged",
+    add_error(kIOReturnNotPrivileged,    "NotPrivilegedError",
             "privilege violation");
-    add_error(kIOReturnBadArgument,      "BadArgument",
+    add_error(kIOReturnBadArgument,      "BadArgumentError",
             "invalid argument");
-    add_error(kIOReturnLockedRead,       "LockedRead",
+    add_error(kIOReturnLockedRead,       "LockedReadError",
             "device read locked");
-    add_error(kIOReturnLockedWrite,      "LockedWrite",
+    add_error(kIOReturnLockedWrite,      "LockedWriteError",
             "device write locked");
-    add_error(kIOReturnExclusiveAccess,  "ExclusiveAccess",
+    add_error(kIOReturnExclusiveAccess,  "ExclusiveAccessError",
             "exclusive access and device already open");
-    add_error(kIOReturnBadMessageID,     "BadMessageID",
+    add_error(kIOReturnBadMessageID,     "BadMessageIDError",
             "sent/received messages had different msg_id");
-    add_error(kIOReturnUnsupported,      "Unsupported",
+    add_error(kIOReturnUnsupported,      "UnsupportedError",
             "unsupported function");
     add_error(kIOReturnVMError,          "VMError",
             "misc. VM failure");
@@ -60,199 +60,210 @@ void init_rbt_error() {
             "internal error");
     add_error(kIOReturnIOError,          "IOError",
             "General I/O error");
-    add_error(kIOReturnCannotLock,       "CannotLock",
+    add_error(kIOReturnCannotLock,       "CannotLockError",
             "can't acquire lock");
-    add_error(kIOReturnNotOpen,          "NotOpen",
+    add_error(kIOReturnNotOpen,          "NotOpenError",
             "device not open");
-    add_error(kIOReturnNotReadable,      "NotReadable",
+    add_error(kIOReturnNotReadable,      "NotReadableError",
             "read not supported");
-    add_error(kIOReturnNotWritable,      "NotWritable",
+    add_error(kIOReturnNotWritable,      "NotWritableError",
             "write not supported");
-    add_error(kIOReturnNotAligned,       "NotAligned",
+    add_error(kIOReturnNotAligned,       "NotAlignedError",
             "alignment error");
-    add_error(kIOReturnBadMedia,         "BadMedia",
+    add_error(kIOReturnBadMedia,         "BadMediaError",
             "Media Error");
-    add_error(kIOReturnStillOpen,        "StillOpen",
+    add_error(kIOReturnStillOpen,        "StillOpenError",
             "device(s) still open");
     add_error(kIOReturnRLDError,         "RLDError",
             "rld failure");
     add_error(kIOReturnDMAError,         "DMAError",
             "DMA failure");
-    add_error(kIOReturnBusy,             "Busy",
+    add_error(kIOReturnBusy,             "BusyError",
             "Device Busy");
-    add_error(kIOReturnTimeout,          "Timeout",
+    add_error(kIOReturnTimeout,          "TimeoutError",
             "I/O Timeout");
-    add_error(kIOReturnOffline,          "Offline",
+    add_error(kIOReturnOffline,          "OfflineError",
             "device offline");
-    add_error(kIOReturnNotReady,         "NotReady",
+    add_error(kIOReturnNotReady,         "NotReadyError",
             "not ready");
-    add_error(kIOReturnNotAttached,      "NotAttached",
+    add_error(kIOReturnNotAttached,      "NotAttachedError",
             "device not attached");
-    add_error(kIOReturnNoChannels,       "NoChannels",
+    add_error(kIOReturnNoChannels,       "NoChannelsError",
             "no DMA channels left");
-    add_error(kIOReturnNoSpace,          "NoSpace",
+    add_error(kIOReturnNoSpace,          "NoSpaceError",
             "no space for data");
-    add_error(kIOReturnPortExists,       "PortExists",
+    add_error(kIOReturnPortExists,       "PortExistsError",
             "port already exists");
-    add_error(kIOReturnCannotWire,       "CannotWire",
+    add_error(kIOReturnCannotWire,       "CannotWireError",
             "can't wire down physical memory");
-    add_error(kIOReturnNoInterrupt,      "NoInterrupt",
+    add_error(kIOReturnNoInterrupt,      "NoInterruptError",
             "no interrupt attached");
-    add_error(kIOReturnNoFrames,         "NoFrames",
+    add_error(kIOReturnNoFrames,         "NoFramesError",
             "no DMA frames enqueued");
-    add_error(kIOReturnMessageTooLarge,  "MessageTooLarge",
+    add_error(kIOReturnMessageTooLarge,  "MessageTooLargeError",
             "oversized msg received on interrupt port");
-    add_error(kIOReturnNotPermitted,     "NotPermitted",
+    add_error(kIOReturnNotPermitted,     "NotPermittedError",
             "not permitted");
-    add_error(kIOReturnNoPower,          "NoPower",
+    add_error(kIOReturnNoPower,          "NoPowerError",
             "no power to device");
-    add_error(kIOReturnNoMedia,          "NoMedia",
+    add_error(kIOReturnNoMedia,          "NoMediaError",
             "media not present");
-    add_error(kIOReturnUnformattedMedia, "UnformattedMedia",
+    add_error(kIOReturnUnformattedMedia, "UnformattedMediaError",
             "media not formatted");
-    add_error(kIOReturnUnsupportedMode,  "UnsupportedMode",
+    add_error(kIOReturnUnsupportedMode,  "UnsupportedModeError",
             "no such mode");
-    add_error(kIOReturnUnderrun,         "Underrun",
+    add_error(kIOReturnUnderrun,         "UnderrunError",
             "data underrun");
-    add_error(kIOReturnOverrun,          "Overrun",
+    add_error(kIOReturnOverrun,          "OverrunError",
             "data overrun");
     add_error(kIOReturnDeviceError,      "DeviceError",
             "the device is not working properly!");
-    add_error(kIOReturnNoCompletion,     "NoCompletion",
+    add_error(kIOReturnNoCompletion,     "NoCompletionError",
             "a completion routine is required");
-    add_error(kIOReturnAborted,          "Aborted",
+    add_error(kIOReturnAborted,          "AbortedError",
             "operation aborted");
-    add_error(kIOReturnNoBandwidth,      "NoBandwidth",
+    add_error(kIOReturnNoBandwidth,      "NoBandwidthError",
             "bus bandwidth would be exceeded");
-    add_error(kIOReturnNotResponding,    "NotResponding",
+    add_error(kIOReturnNotResponding,    "NotRespondingError",
             "device not responding");
-    add_error(kIOReturnIsoTooOld,        "IsoTooOld",
+    add_error(kIOReturnIsoTooOld,        "IsoTooOldError",
             "isochronous I/O request for distant past!");
-    add_error(kIOReturnIsoTooNew,        "IsoTooNew",
+    add_error(kIOReturnIsoTooNew,        "IsoTooNewError",
             "isochronous I/O request for distant future");
-    add_error(kIOReturnNotFound,         "NotFound",
+    add_error(kIOReturnNotFound,         "NotFoundError",
             "data was not found");
-    add_error(kIOReturnInvalid,          "Invalid",
+    add_error(kIOReturnInvalid,          "InvalidError",
             "should never be seen");
 
     // Bluetooth
-    add_error(kBluetoothHCIErrorUnknownHCICommand, "UnknownHCICommand",
+    add_error(kBluetoothHCIErrorUnknownHCICommand, "UnknownHCICommandError",
             "unknown HCI command");
-	add_error(kBluetoothHCIErrorNoConnection, "NoConnection", "no connection");
-    add_error(kBluetoothHCIErrorHardwareFailure, "HardwareFailure",
+	add_error(kBluetoothHCIErrorNoConnection, "NoConnectionError",
+            "no connection");
+    add_error(kBluetoothHCIErrorHardwareFailure, "HardwareFailureError",
             "hardware failure");
-	add_error(kBluetoothHCIErrorPageTimeout, "PageTimeout", "page timeout");
+	add_error(kBluetoothHCIErrorPageTimeout, "PageTimeoutError",
+            "page timeout");
     add_error(kBluetoothHCIErrorAuthenticationFailure,
-            "AuthenticationFailure", "authentication failure");
-	add_error(kBluetoothHCIErrorKeyMissing, "KeyMissing", "key missing");
-	add_error(kBluetoothHCIErrorMemoryFull, "MemoryFull", "memory full");
-	add_error(kBluetoothHCIErrorConnectionTimeout, "ConnectionTimeout",
+            "AuthenticationFailureError", "authentication failure");
+	add_error(kBluetoothHCIErrorKeyMissing, "KeyMissingError", "key missing");
+	add_error(kBluetoothHCIErrorMemoryFull, "MemoryFullError", "memory full");
+	add_error(kBluetoothHCIErrorConnectionTimeout, "ConnectionTimeoutError",
             "connection timeout");
     add_error(kBluetoothHCIErrorMaxNumberOfConnections,
-            "MaxNumberOfConnections", "maximum number of connections");
+            "MaxNumberOfConnectionsError", "maximum number of connections");
     add_error(kBluetoothHCIErrorMaxNumberOfSCOConnectionsToADevice,
-            "MaxNumberOfSCOConnectionsToADevice",
+            "MaxNumberOfSCOConnectionsToADeviceError",
             "maximum number of synchronous connections to a device");
     add_error(kBluetoothHCIErrorACLConnectionAlreadyExists,
-            "ACLConnectionAlreadyExists", "ACL connection already exists");
-    add_error(kBluetoothHCIErrorCommandDisallowed, "CommandDisallowed",
+            "ACLConnectionAlreadyExistsError",
+            "ACL connection already exists");
+    add_error(kBluetoothHCIErrorCommandDisallowed, "CommandDisallowedError",
             "command disallowed");
     add_error(kBluetoothHCIErrorHostRejectedLimitedResources,
-            "HostRejectedLimitedResources",
+            "HostRejectedLimitedResourcesError",
             "host rejected, limited resources");
     add_error(kBluetoothHCIErrorHostRejectedSecurityReasons,
-            "HostRejectedSecurityReasons", "host rejected, security reasons");
+            "HostRejectedSecurityReasonsError",
+            "host rejected, security reasons");
     add_error(kBluetoothHCIErrorHostRejectedRemoteDeviceIsPersonal,
-            "HostRejectedRemoteDeviceIsPersonal",
+            "HostRejectedRemoteDeviceIsPersonalError",
             "host rejected, remote device is personal");
-	add_error(kBluetoothHCIErrorHostTimeout, "HostTimeout", "host timeout");
+	add_error(kBluetoothHCIErrorHostTimeout, "HostTimeoutError",
+            "host timeout");
     add_error(kBluetoothHCIErrorUnsupportedFeatureOrParameterValue,
-            "UnsupportedFeatureOrParameterValue",
+            "UnsupportedFeatureOrParameterValueError",
             "unsupported feature or parameter value");
     add_error(kBluetoothHCIErrorInvalidHCICommandParameters,
-            "InvalidHCICommandParameters", "invalid HCI command parameters");
+            "InvalidHCICommandParametersError",
+            "invalid HCI command parameters");
     add_error(kBluetoothHCIErrorOtherEndTerminatedConnectionUserEnded,
-            "OtherEndTerminatedConnectionUserEnded",
+            "OtherEndTerminatedConnectionUserEndedError",
             "the other end terminated the connection, by user");
     add_error(kBluetoothHCIErrorOtherEndTerminatedConnectionLowResources,
-            "OtherEndTerminatedConnectionLowResources",
+            "OtherEndTerminatedConnectionLowResourcesError",
             "the other end terminated the connection, low resources");
     add_error(kBluetoothHCIErrorOtherEndTerminatedConnectionAboutToPowerOff,
-            "OtherEndTerminatedConnectionAboutToPowerOff",
+            "OtherEndTerminatedConnectionAboutToPowerOffError",
             "the other end terminated the connection, about to power off");
     add_error(kBluetoothHCIErrorConnectionTerminatedByLocalHost,
-            "ConnectionTerminatedByLocalHost",
+            "ConnectionTerminatedByLocalHostError",
             "connection terminated by local host");
-	add_error(kBluetoothHCIErrorRepeatedAttempts, "RepeatedAttempts",
+	add_error(kBluetoothHCIErrorRepeatedAttempts, "RepeatedAttemptsError",
             "repeated attempts");
-	add_error(kBluetoothHCIErrorPairingNotAllowed, "PairingNotAllowed",
+	add_error(kBluetoothHCIErrorPairingNotAllowed, "PairingNotAllowedError",
             "pairing is not allowed");
-	add_error(kBluetoothHCIErrorUnknownLMPPDU, "UnknownLMPPDU",
+	add_error(kBluetoothHCIErrorUnknownLMPPDU, "UnknownLMPPDUError",
             "unknown LMP PDU");
     add_error(kBluetoothHCIErrorUnsupportedRemoteFeature,
-            "UnsupportedRemoteFeature", "unsupported remote feature");
-	add_error(kBluetoothHCIErrorSCOOffsetRejected, "SCOOffsetRejected",
+            "UnsupportedRemoteFeatureError", "unsupported remote feature");
+	add_error(kBluetoothHCIErrorSCOOffsetRejected, "SCOOffsetRejectedError",
             "SCO offset rejected");
-    add_error(kBluetoothHCIErrorSCOIntervalRejected, "SCOIntervalRejected",
+    add_error(kBluetoothHCIErrorSCOIntervalRejected, "SCOIntervalRejectedError",
             "SCO interval rejected");
-	add_error(kBluetoothHCIErrorSCOAirModeRejected, "SCOAirModeRejected",
+	add_error(kBluetoothHCIErrorSCOAirModeRejected, "SCOAirModeRejectedError",
             "SCO air mode rejected");
-    add_error(kBluetoothHCIErrorInvalidLMPParameters, "InvalidLMPParameters",
+    add_error(kBluetoothHCIErrorInvalidLMPParameters,
+            "InvalidLMPParametersError",
             "invalid LMP parameters");
 	add_error(kBluetoothHCIErrorUnspecifiedError, "UnspecifiedError",
             "unspecified error");
     add_error(kBluetoothHCIErrorUnsupportedLMPParameterValue,
-            "UnsupportedLMPParameterValue",
+            "UnsupportedLMPParameterValueError",
             "unsupported LMP parameter value");
-    add_error(kBluetoothHCIErrorRoleChangeNotAllowed, "RoleChangeNotAllowed",
+    add_error(kBluetoothHCIErrorRoleChangeNotAllowed,
+            "RoleChangeNotAllowedError",
             "role change not allowed");
-	add_error(kBluetoothHCIErrorLMPResponseTimeout, "LMPResponseTimeout",
+	add_error(kBluetoothHCIErrorLMPResponseTimeout, "LMPResponseTimeoutError",
             "LMP response timeout");
     add_error(kBluetoothHCIErrorLMPErrorTransactionCollision,
-            "LMPErrorTransactionCollision",
+            "LMPErrorTransactionCollisionError",
             "LMP error transaction collision");
-	add_error(kBluetoothHCIErrorLMPPDUNotAllowed, "LMPPDUNotAllowed",
+	add_error(kBluetoothHCIErrorLMPPDUNotAllowed, "LMPPDUNotAllowedError",
             "LMP DU not allowed");
     add_error(kBluetoothHCIErrorEncryptionModeNotAcceptable,
-            "EncryptionModeNotAcceptable", "encryption mode not acceptable");
-	add_error(kBluetoothHCIErrorUnitKeyUsed, "UnitKeyUsed", "unit key used");
-	add_error(kBluetoothHCIErrorQoSNotSupported, "QoSNotSupported",
+            "EncryptionModeNotAcceptableError",
+            "encryption mode not acceptable");
+	add_error(kBluetoothHCIErrorUnitKeyUsed, "UnitKeyUsedError",
+            "unit key used");
+	add_error(kBluetoothHCIErrorQoSNotSupported, "QoSNotSupportedError",
             "QoS not supported");
-	add_error(kBluetoothHCIErrorInstantPassed, "InstantPassed",
+	add_error(kBluetoothHCIErrorInstantPassed, "InstantPassedError",
             "instant passed");
     add_error(kBluetoothHCIErrorPairingWithUnitKeyNotSupported,
-            "PairingWithUnitKeyNotSupported",
+            "PairingWithUnitKeyNotSupportedError",
             "pairing with unit key not supported");
     add_error(kBluetoothHCIErrorHostRejectedUnacceptableDeviceAddress,
-            "HostRejectedUnacceptableDeviceAddress",
+            "HostRejectedUnacceptableDeviceAddressError",
             "host rejected, unacceptable device address");
     add_error(kBluetoothHCIErrorDifferentTransactionCollision,
-            "DifferentTransactionCollision",
+            "DifferentTransactionCollisionError",
             "different transaction collision");
     add_error(kBluetoothHCIErrorQoSUnacceptableParameter,
-            "QoSUnacceptableParameter",
+            "QoSUnacceptableParameterError",
             "Qos unacceptable parameter");
-	add_error(kBluetoothHCIErrorQoSRejected, "QoSRejected",
+	add_error(kBluetoothHCIErrorQoSRejected, "QoSRejectedError",
             "QoS rejected");
     add_error(kBluetoothHCIErrorChannelClassificationNotSupported,
-            "ChannelClassificationNotSupported",
+            "ChannelClassificationNotSupportedError",
             "channel classification not supported");
-    add_error(kBluetoothHCIErrorInsufficientSecurity, "InsufficientSecurity",
+    add_error(kBluetoothHCIErrorInsufficientSecurity,
+            "InsufficientSecurityError",
             "insufficient security");
     add_error(kBluetoothHCIErrorParameterOutOfMandatoryRange,
-            "ParameterOutOfMandatoryRange",
+            "ParameterOutOfMandatoryRangeError",
             "parameter out of mandatory range");
-	add_error(kBluetoothHCIErrorRoleSwitchPending, "RoleSwitchPending",
+	add_error(kBluetoothHCIErrorRoleSwitchPending, "RoleSwitchPendingError",
             "role switch pending");
     add_error(kBluetoothHCIErrorReservedSlotViolation,
-            "ReservedSlotViolation", "reserved slot violation");
-    add_error(kBluetoothHCIErrorRoleSwitchFailed, "RoleSwitchFailed",
+            "ReservedSlotViolationError", "reserved slot violation");
+    add_error(kBluetoothHCIErrorRoleSwitchFailed, "RoleSwitchFailedError",
             "role switch failed");
     add_error(kBluetoothHCIErrorExtendedInquiryResponseTooLarge,
-            "ExtendedInquiryResponseTooLarge",
+            "ExtendedInquiryResponseTooLargeError",
             "extended inquiry response too large");
     add_error(kBluetoothHCIErrorSecureSimplePairingNotSupportedByHost,
-            "SecureSimplePairingNotSupportedByHost",
+            "SecureSimplePairingNotSupportedByHostError",
             "secure simple pairing not supported by host");
 }
 
