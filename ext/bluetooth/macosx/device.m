@@ -55,8 +55,7 @@ VALUE rbt_device_link_quality(VALUE self) {
 
     status = (IOReturn)NUM2INT(rb_iv_get(self, "@link_quality_error"));
 
-    if (status != kIOReturnSuccess)
-        return Qfalse;
+    rbt_check_status(status, nil);
 
     return rb_iv_get(self, "@link_quality");
 }
@@ -73,8 +72,7 @@ VALUE rbt_device_open_connection(VALUE self) {
 
     status = [device openConnection];
 
-    if (status != kIOReturnSuccess)
-        return Qnil;
+    rbt_check_status(status, pool);
 
     result = rb_yield(Qundef);
 
@@ -82,8 +80,7 @@ VALUE rbt_device_open_connection(VALUE self) {
 
     [pool release];
 
-    if (status != kIOReturnSuccess)
-        return Qnil;
+    rbt_check_status(status, nil);
 
     return result;
 }
@@ -94,7 +91,6 @@ VALUE rbt_device_pair(VALUE self) {
     IOBluetoothDevicePair *device_pair;
     IOReturn status;
     NSAutoreleasePool *pool;
-    char * tmp = NULL;
 
     pool = [[NSAutoreleasePool alloc] init];
 
@@ -108,10 +104,7 @@ VALUE rbt_device_pair(VALUE self) {
 
     status = [device_pair start];
 
-    if (status != kIOReturnSuccess) {
-        [pool release];
-        return Qfalse;
-    }
+    rbt_check_status(status, pool);
 
     CFRunLoopRun();
 
@@ -119,8 +112,7 @@ VALUE rbt_device_pair(VALUE self) {
 
     status = (IOReturn)NUM2INT(rb_iv_get(self, "@pair_error"));
 
-    if (status != kIOReturnSuccess)
-        return Qfalse;
+    rbt_check_status(status, nil);
 
     return Qtrue;
 }
@@ -137,8 +129,7 @@ VALUE rbt_device_request_name(VALUE self) {
 
     status = [device remoteNameRequest: nil];
 
-    if (status != kIOReturnSuccess)
-        return Qnil;
+    rbt_check_status(status, pool);
 
     name = rb_str_new2([[device name] UTF8String]);
 
@@ -177,8 +168,7 @@ VALUE rbt_device_rssi(VALUE self) {
 
     status = (IOReturn)NUM2INT(rb_iv_get(self, "@rssi_error"));
 
-    if (status != kIOReturnSuccess)
-        return Qfalse;
+    rbt_check_status(status, nil);
 
     return rb_iv_get(self, "@rssi");
 }

@@ -5,8 +5,11 @@
 #import <IOBluetooth/objc/IOBluetoothDeviceInquiry.h>
 #import <IOBluetooth/objc/IOBluetoothHostController.h>
 
-
 #import <ruby.h>
+
+void init_rbt_error();
+
+void rbt_check_status(IOReturn status, NSAutoreleasePool *pool);
 
 VALUE rbt_scan(VALUE);
 
