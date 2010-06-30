@@ -1,5 +1,7 @@
 /ext/bluetooth/Makefile
 /tmp
+/pkg
+/doc
 *.swp
 *.bundle
 *.dll
