@@ -70,9 +70,11 @@ VALUE rbt_device_open_connection(VALUE self) {
 
     device = rbt_device_get(self);
 
-    status = [device openConnection];
+    if (![device isConnected]) {
+        status = [device openConnection];
 
-    rbt_check_status(status, pool);
+        rbt_check_status(status, pool);
+    }
 
     result = rb_yield(Qundef);
 

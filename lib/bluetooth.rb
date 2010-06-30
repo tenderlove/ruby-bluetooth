@@ -6,7 +6,10 @@ module Bluetooth
 
   class Error < RuntimeError
     def self.raise status
-      raise(*ERRORS[status])
+      err = Bluetooth::ERRORS[status]
+      super(*err) if err
+
+      super self, "unknown error (#{status})"
     end
   end
 
