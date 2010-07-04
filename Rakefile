@@ -2,7 +2,7 @@ require 'rubygems'
 require 'hoe'
 #require 'rake/extensiontask'
 
-hoe = Hoe.spec 'ruby-bluetooth' do
+hoe = Hoe.spec 'bluetooth' do
   developer 'Eric Hodel', 'drbrain@segment7.net'
   developer 'Jeremie Castagna', ''
   developer 'Esteve Fernandez', ''
